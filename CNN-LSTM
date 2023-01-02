@@ -1,0 +1,35 @@
+import csv
+
+with open('/content/drive/MyDrive/Colab Notebooks/hate speech dataset/Hatespeech.csv', newline='') as myFile:  
+    reader = csv.reader(myFile)
+    #for row in reader:
+     #   print(row)
+#normalize dataset
+# Define preprocessing util function
+import pandas as pd
+data=pd.read_csv('/content/drive/MyDrive/Colab Notebooks/hate speech dataset/Hatespeech.csv')
+data.columns = ['0','date' ,'clean tweets','class']
+data.head(10)
+import re
+def Normlization(text):
+
+    text = re.sub("[إأآا]", "ا", text)
+    text = re.sub("ى", "ي", text)
+    text = re.sub("ؤ", "ء", text)
+    text = re.sub("ئ", "ء", text)
+    text = re.sub("ة", "ه", text)
+    text = re.sub("گ", "ك", text) 
+    text = re.sub('[A-Za-z]+',' ',text)
+    text = re.sub(r'[\\u[0-9\\]+',' ',text)
+    text = re.sub('[A-Za-z]+',' ',text)
+    text = re.sub(r'[\\u[0-9\\]+',' ',text)
+    text = re.sub(r"[^\w\s]", '', text)
+    text = re.sub(r"[a-zA-Z]", '', text)
+    text = text.replace('وو', 'و')
+    text = text.replace('يي', 'ي')
+    text = text.replace('اا', 'ا')
+    text = re.sub('[A-Za-z]+',' ',text)
+    text = re.sub(r'[\\u[A-Za-z0-9\\]+',' ',text)
+    return text
+data['Ready tweets'] = data['clean tweets'].apply(lambda x: Normlization(x))
+data.head(20)
